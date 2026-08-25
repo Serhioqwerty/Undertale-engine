@@ -54,6 +54,7 @@ public:
 			for (auto& w : Walls) {
 				if (CheckCollisionRecs(Bullets[i]->GetRec(), w->GetRec())) {
 					Bullets.erase(Bullets.begin() + i);
+					i--;
 				}
 			}
 		}

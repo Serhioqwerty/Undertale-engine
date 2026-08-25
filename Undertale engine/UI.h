@@ -1,5 +1,6 @@
 #pragma once
 #include <raylib.h>
+#include <string>
 
 class Element {
 private:
@@ -7,7 +8,7 @@ private:
 	Vector2 position_text;
 	float Width, Height;
 	Color color;
-	const char* text;
+	std::string text;
 	int Size_font;
 	Color color_text;
 public:
@@ -17,7 +18,7 @@ public:
 		this->color_text = WHITE;
 	}
 	~Element() {
-		
+
 	}
 	void SetText(const char* t) {
 		this->text = t;
@@ -34,6 +35,6 @@ public:
 
 	void Render() {
 		DrawRectangle(this->position_box.x, this->position_box.y, this->Width, this->Height, this->color);
-		DrawText(text, this->position_box.x + this->position_text.x, this->position_box.y + this->position_text.y, this->Size_font, this->color_text);
+		DrawText(text.c_str(), this->position_box.x + this->position_text.x, this->position_box.y + this->position_text.y, this->Size_font, this->color_text);
 	}
 };
