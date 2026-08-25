@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Undertale engine/Undertale engine.vcxproj" Id="596e0413-259c-4bb2-bcab-6fe19068dad2" />
+</Solution>
