@@ -39,4 +39,11 @@ public:
 	void Render() {
 		DrawRectangle(this->Position.x, this->Position.y, this->Width, this->Height, this->color);
 	}
+	Rectangle GetRec() {
+		return { this->Position.x, this->Position.y, this->Width, this->Height };
+	}
+	void SetPos(Vector2 pos) {
+		this->Position.x = pos.x;
+		this->Position.y = pos.y;
+	}
 };

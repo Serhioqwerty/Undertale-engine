@@ -7,6 +7,7 @@
 #include "UI.h"
 #include <memory>
 #include <string>
+#include "Wall.h"
 
 class Game {
 private:
@@ -18,6 +19,7 @@ public:
 	std::unique_ptr<Player>player;
 	std::vector<std::unique_ptr<Enemy>>Enemys;
 	std::vector<std::unique_ptr<Element>>Elements;
+	std::vector<std::unique_ptr<Wall>>Walls;
 
 	Game() : RAM(0) {
 		
@@ -32,16 +34,30 @@ public:
 	void CreateUI(Vector2 pos_box, Vector2 pos_text, float W, float H, Color c, const char* t) {
 		Elements.push_back(std::make_unique<Element>(pos_box, pos_text, W, H, c, t));
 	}
+	void Col_update(Rectangle& hitbox_object) {
+		if (CheckCollisionRecs(game.player->GetRec(), hitbox_object)) {
+			game.player->SetPos(game.player->GetOldPos());
+		}
+	}
+
+	void CreateWall(Vector2 pos, float W, float H, Color c) {
+		Walls.push_back(std::make_unique<Wall>(pos, W, H, c));
+	}
 
 	void Collision_update() {
 		for (int i = 0; i < Bullets.size(); i++) {
 			if (CheckCollisionRecs({ player->GetStatus().Pos.x, player->GetPos().y, player->GetStatus().w, player->GetStatus().h }, { Bullets[i]->GetStatus().Pos.x, Bullets[i]->GetStatus().Pos.y, Bullets[i]->GetStatus().w, Bullets[i]->GetStatus().h })) {
 				player->Attack(Bullets[i]->GetAttack());
 				Bullets.erase(Bullets.begin() + i);
-				player->Attack(Bullets[i]->GetAttack());
 				i--;
 			}
+			for (auto& w : Walls) {
+				if (CheckCollisionRecs(Bullets[i]->GetRec(), w->GetRec())) {
+					Bullets.erase(Bullets.begin() + i);
+				}
+			}
 		}
+		
 	}
 
 	void CreateEnemy(Vector2 pos, float W, float H, Color c, float Health, float Attack, float t) {
@@ -73,6 +89,14 @@ public:
 		}
 	}
 
+	void Wall_update() {
+		for (int i = 0; i < Walls.size(); i++) {
+			Rectangle r = Walls[i]->GetRec();
+			Col_update(r);
+			DrawRectangle(Walls[i]->GetPos().x, Walls[i]->GetPos().y, Walls[i]->GetRec().width, Walls[i]->GetRec().height, Walls[i]->GetStatus().color);
+		}
+	}
+
 	void Custom_update() {
 
 	}
@@ -84,6 +108,7 @@ public:
 		CreateEnemy({ 400, 30 }, 50, 50, RED, 100, 1, 0.5);
 		CreateEnemy({ 100, 300 }, 50, 50, RED, 100, 1, 0.5);
 		CreateEnemy({ 700, 200 }, 50, 50, RED, 100, 1, 0.5);
+		CreateWall({ 300, 500 }, 700, 100, ORANGE);
 	}
 
 
@@ -91,6 +116,7 @@ public:
 		player->Update_player();
 		Collision_update();
 		Bullet_update();
+		Wall_update();
 		Enemy_update();
 		Custom_update();
 		UI_update();

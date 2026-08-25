@@ -13,6 +13,7 @@ private:
 	int exp;
 	float speed;
 	Vector2 vector_move;
+	Vector2 old_pos;
 public:
 	int GetLvl() {
 		if (this->exp >= 30000) {
@@ -91,6 +92,7 @@ public:
 	
 
 	void Update_player() {
+		this->old_pos = this->GetPos();
 		this->Move(this->vector_move.x, this->vector_move.y);
 		this->Render();
 		if (IsKeyDown(KEY_UP)) {
@@ -118,6 +120,7 @@ public:
 			this->speed = 5;
 		}
 		
+		
 	}
 	void Attack(float h) {
 		this->health -= h;
@@ -128,5 +131,7 @@ public:
 	float GetHealth() {
 		return this->health;
 	}
-
+	Vector2 GetOldPos() {
+		return this->old_pos; 
+	}
 };
