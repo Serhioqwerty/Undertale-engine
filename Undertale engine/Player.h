@@ -113,6 +113,7 @@ public:
 		else {
 			this->vector_move.x = 0;
 		}
+		
 		if (IsKeyDown(KEY_X)) {
 			this->speed = 1.5;
 		}
