@@ -43,6 +43,7 @@ public:
 		float grad = std::atan((float)BC / (float)BA) * 180 / 3.14159;
 		return grad;
 	}
+	
 };
 
 extern Cmath_extend math;

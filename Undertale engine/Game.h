@@ -96,11 +96,46 @@ public:
 		Enemys.push_back(std::make_unique<Enemy>(pos, W, H, c, Health, Attack, t));
 	}
 	
+	bool RayCasting(Vector2& enemy, float distance) {
+		float k = 1;
+		Rectangle rect = { enemy.x, enemy.y, 5, 5 };
+		Rectangle rect_wall;
+		Vector2 player_pos = this->player->GetPos();
+		Vector2 vector_move = math.GetVectorMove(player_pos, enemy);
+
+		Vector2 Pos_player = player->GetPos();
+		Vector2 rect_pos = { rect.x, rect.y };
+		while (math.GetDistance(Pos_player, rect_pos) < distance) {
+			rect.x += vector_move.x * k;
+			rect.y += vector_move.y * k;
+			for (auto& w : Walls) {
+				rect_wall = w->GetRec();
+				DrawRectangle(rect.x, rect.y, rect.width, rect.height, {0, 121, 241, 25});
+				
+				if (CheckCollisionRecs(rect, rect_wall)) {
+					
+					return false;
+				}
+				if (CheckCollisionRecs(rect, player->GetRec())) {
+					
+					return true;
+				}
+			}
+		}
+		return false;
+
+		
+	}
+
 	//Обновление врагов
 	void Enemy_update() {
 		for (auto& e : Enemys) {
 			DrawRectangle(e->GetPos().x, e->GetPos().y, e->GetStatus().w, e->GetStatus().h, e->GetStatus().color);
-			e->Triple_shoot();
+			Vector2 pos = { e->GetPos().x + e->GetStatus().w / 2, e->GetPos().y + e->GetStatus().h / 2};
+			bool is_view = RayCasting(pos, 500);
+			if (is_view) {
+				e->Triple_shoot();
+			}
 		}
 
 	}
@@ -130,13 +165,14 @@ public:
 			Rectangle r = Walls[i]->GetRec();
 			Col_update(r);
 			DrawRectangle(Walls[i]->GetPos().x, Walls[i]->GetPos().y, Walls[i]->GetRec().width, Walls[i]->GetRec().height, Walls[i]->GetStatus().color);
+
 		}
 	}
 
-
+	
 	//Пользовательское обновление, где программист сможет добавляиь свое
 	void Custom_update() {
-
+		
 	}
 
 	//Иницилизация игры. Нужна для певроначального создания обьектов.
