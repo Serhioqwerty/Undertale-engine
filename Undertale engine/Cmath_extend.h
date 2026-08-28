@@ -43,7 +43,17 @@ public:
 		float grad = std::atan((float)BC / (float)BA) * 180 / 3.14159;
 		return grad;
 	}
-	
+    //нужно выбрать положительный интерва. Эта функция сравнивает числа.
+	bool Intervale_if(float num1, float num2, float intervale) {
+		float n = num1 - num2;
+		if (n < 0) {
+			n /= -1;
+		}
+		if (n <= intervale) {
+			return true;
+		}
+		return false;
+	}
 };
 
 extern Cmath_extend math;
