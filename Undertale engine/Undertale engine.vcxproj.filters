@@ -24,7 +24,7 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>Файлы заголовков</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp">
+    <ClCompile Include="Custom.cpp">
       <Filter>Файлы заголовков</Filter>
     </ClCompile>
   </ItemGroup>
