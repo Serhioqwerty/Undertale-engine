@@ -147,17 +147,20 @@
   <ItemGroup>
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Custom.cpp" />
+    <ClCompile Include="Memory.cpp" />
+    <ClCompile Include="Game_init.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Game.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="Bullet.h" />
-    <ClInclude Include="Cmath_extend.h" />
-    <ClInclude Include="Entity.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="UI.h" />
-    <ClInclude Include="Wall.h" />
+    <ClInclude Include="Engine\Enemy.h" />
+    <ClInclude Include="Engine\Bullet.h" />
+    <ClInclude Include="Engine\Cmath_extend.h" />
+    <ClInclude Include="Engine\Entity.h" />
+    <ClInclude Include="Engine\Game.h" />
+    <ClInclude Include="Engine\Player.h" />
+    <ClInclude Include="Engine\UI.h" />
+    <ClInclude Include="Engine\Wall.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="raylib.dll" />
