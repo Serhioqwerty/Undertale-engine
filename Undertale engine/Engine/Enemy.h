@@ -5,7 +5,6 @@
 #include <raylib.h>
 #include "Cmath_extend.h"
 
-
 class Game;
 extern Game game;
 extern Cmath_extend math;
@@ -24,12 +23,20 @@ public:
 		
 	}
 
-	Enemy(Vector2 pos, float W, float H, Color c, float Health, float Attack, float ta, Type_attack t) : Entity(pos, W, H, c), Health(Health), Attack(Attack), timer(0), target(ta) {
+	Enemy(Vector2 pos, float W, float H, Color c, float Health, float Attack, float ta, Type_attack t) : Entity(pos, W, H, c, 0), Health(Health), Attack(Attack), timer(0), target(ta) {
 		if (Health <= 0) {
 			return;
 		}
 		this->type = t;
-		
+
+	}
+
+	Enemy(Vector2 pos, float W, float H, Color c, float Health, float Attack, float ta, Type_attack t, const char* texture) : Entity(pos, W, H, c, texture), Health(Health), Attack(Attack), timer(0), target(ta) {
+		if (Health <= 0) {
+			return;
+		}
+		this->type = t;
+
 	}
 
 	void Shoot();

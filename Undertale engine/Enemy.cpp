@@ -3,6 +3,7 @@
 #include "Engine/Game.h"
 #include "Engine/Enemy.h"
 
+
 Game game;
 
 void Enemy::Shoot() {
@@ -10,8 +11,6 @@ void Enemy::Shoot() {
 	this->timer += dt;
 	if (timer >= this->target) {
 		if (this->type == Type_attack::DEFAULT) {
-			float timer = 0;
-			float frame = GetFrameTime();
 			float deltaTarget = 2;
 			float pos_x_player = game.player->GetPos().x + game.player->GetStatus().w / 2;
 			float pos_y_player = game.player->GetPos().y + game.player->GetStatus().h / 2;
@@ -19,9 +18,6 @@ void Enemy::Shoot() {
 			float pos_y_this = this->GetPos().y + this->GetStatus().h / 2;
 			Vector2 vec_move = math.GetVectorMove({ pos_x_player, pos_y_player }, { pos_x_this, pos_y_this });
 			Vector2 vec_this = { pos_x_this, pos_y_this };
-			while (timer < deltaTarget) {
-				timer += frame;
-			}
 			game.Bullets.push_back(std::make_unique<Bullet>(vec_this, 5, 5, WHITE, vec_move, 1));
 		}
 		else if (this->type == Type_attack::TRIPLE) {

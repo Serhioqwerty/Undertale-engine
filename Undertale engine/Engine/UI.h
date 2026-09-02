@@ -11,30 +11,15 @@ private:
 	std::string text;
 	int Size_font;
 	Color color_text;
+	std::string class_ui;
 public:
-	Element(Vector2 pos_box, Vector2 pos_text, float W, float H, Color c,  const char* t) : position_box(pos_box), position_text(pos_text), Width(W), Height(H), color(c) {
-		this->text = t;
-		this->Size_font = 12;
-		this->color_text = WHITE;
-	}
-	~Element() {
+	Element(Vector2 pos_box, Vector2 pos_text, float W, float H, Color c, const char* t);
+	~Element();
 
-	}
-	void SetText(const char* t) {
-		this->text = t;
-	}
-	void SetSizeFont(int p) {
-		this->Size_font = p;
-	}
-	void SetPosition(Vector2 pos) {
-		this->position_box = pos;
-	}
-	void SetColorText(Color c) {
-		this->color_text = c;
-	}
+	void SetText(const char* t); //Изменить текст
+	void SetSizeFont(int p); //Изменить размер шрифта
+	void SetPosition(Vector2 pos); //Изменить позицию
+	void SetColorText(Color c); //Изменить цвет текста
 
-	void Render() {
-		DrawRectangle(this->position_box.x, this->position_box.y, this->Width, this->Height, this->color);
-		DrawText(text.c_str(), this->position_box.x + this->position_text.x, this->position_box.y + this->position_text.y, this->Size_font, this->color_text);
-	}
+	void Render(); //Отрендерить
 };
