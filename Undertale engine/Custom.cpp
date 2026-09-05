@@ -22,6 +22,7 @@ Audio_class audio_c;
 class Clock {
 private:
 	float timer;
+	int int_timer;
 public:
 	Clock() {
 		this->timer = 0;
@@ -29,9 +30,15 @@ public:
 	float GetTimer() {
 		return this->timer;
 	}
+
+	int GetTimerInt() {
+		return this->int_timer;
+	}
+
 	void Update() {
 		float dt = GetFrameTime();
 		timer += dt;
+		int_timer = timer;
 	}
 };
 
@@ -39,22 +46,21 @@ public:
 
 Clock time_engine;
 
+int test;
+
+bool operation = false;
+
 //точка входа в user-main (нужно использовать обычный С++ код, чтобы писать события).
 void Game::Custom_update() {
 	time_engine.Update();
-	if (math.Intervale_if(time_engine.GetTimer(), 2.0f, intervale_with_one_operation)) {
-		std::cout << "jopa";
-		Game::CreateEnemy({ 50, 700 }, 100, 100, RED, 120, 1, 0.5, Type_attack::TRIPLE, "Assets\\image\\chara.png");
-		audio_c.Play_music("Assets\\audio\\phase_2.mp3");
+	if (time_engine.GetTimer() > 2 and time_engine.GetTimerInt() % 4 == 0) {
+		std::cout << "Time: " << time_engine.GetTimerInt() << std::endl;
+		this->Walls[test]->Move(0, 1);
 	}
-	if (math.Intervale_if(time_engine.GetTimer(), 5.0f, 2.2)) {
-		int last = Game::Enemys.size() - 1;
-		Game::Enemys[last]->Move(0, -1);
-		
+	if (time_engine.GetTimerInt() == 2 and operation == false) {
+		test = CreateWallWithIndex({player->GetPos().x + 100, player->GetPos().y - 100}, 100, 100, ORANGE);
+		operation = true;
 	}
-	if (math.Intervale_if(time_engine.GetTimer(), 15.2, 10)) {
-		int last = Game::Enemys.size() - 1;
-		Game::Enemys[last]->Move(1, 0);
-	}
+	
 	
 }

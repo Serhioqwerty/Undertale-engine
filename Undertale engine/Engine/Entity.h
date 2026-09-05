@@ -32,10 +32,10 @@ public:
 
 	}
 	Entity() : Position({ 0, 0 }), Width(10), Height(10), color(10) {
-
+		
 	}
 	~Entity() {
-
+		UnloadTexture(this->texture);
 	}
 	Vector2 GetPos() {
 		return this->Position;

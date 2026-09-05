@@ -54,6 +54,11 @@ public:
 		}
 		return false;
 	}
+	bool areEqual(float a, float b, float epsilon = 0.001f) {
+		return std::abs(a - b) < epsilon;
+	}
 };
+
+
 
 extern Cmath_extend math;

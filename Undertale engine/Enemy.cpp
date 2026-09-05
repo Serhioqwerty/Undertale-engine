@@ -29,6 +29,7 @@ void Enemy::Shoot() {
 			Vector2 vec_right = math.MultiplyVector(rotation_right, vec_move_center);
 			Vector2 vec_left = math.MultiplyVector(rotation_left, vec_move_center);
 			game.Bullets.push_back(std::make_unique<Bullet>(PosThis, 5, 5, WHITE, vec_move_center, 1));
+			
 			game.Bullets.push_back(std::make_unique<Bullet>(PosThis, 5, 5, WHITE, vec_right, 1));
 			game.Bullets.push_back(std::make_unique<Bullet>(PosThis, 5, 5, WHITE, vec_left, 1));
 		}

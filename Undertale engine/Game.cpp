@@ -48,7 +48,7 @@ void Game::UI_update() {
 
 void Game::Bullet_update() {
 	for (auto& b : Bullets) {
-		DrawRectangle(b->GetStatus().Pos.x, b->GetStatus().Pos.y, b->GetStatus().w, b->GetStatus().h, b->GetStatus().color);
+		b->Render();
 		b->Move(b->GetVectorMove().x, b->GetVectorMove().y);
 	}
 
@@ -59,7 +59,7 @@ void Game::Collision_update() {
 		if (CheckCollisionRecs({ player->GetStatus().Pos.x, player->GetPos().y, player->GetStatus().w, player->GetStatus().h }, { Bullets[i]->GetStatus().Pos.x, Bullets[i]->GetStatus().Pos.y, Bullets[i]->GetStatus().w, Bullets[i]->GetStatus().h })) {
 			player->Attack(Bullets[i]->GetAttack());
 			Bullets.erase(Bullets.begin() + i);
-			
+
 		}
 		//если пули попадают в стену
 		for (auto& w : Walls) {
@@ -103,14 +103,14 @@ void Game::Wall_update() {
 	for (int i = 0; i < Walls.size(); i++) {
 		Rectangle r = Walls[i]->GetRec();
 		Col_update(r);
-		DrawRectangle(Walls[i]->GetPos().x, Walls[i]->GetPos().y, Walls[i]->GetRec().width, Walls[i]->GetRec().height, Walls[i]->GetStatus().color);
+		Walls[i]->Render();
 
 	}
 }
 
 void Game::Enemy_update() {
 	for (auto& e : Enemys) {
-		DrawRectangle(e->GetPos().x, e->GetPos().y, e->GetStatus().w, e->GetStatus().h, e->GetStatus().color);
+		e->Render();
 		Vector2 pos = { e->GetPos().x + e->GetStatus().w / 2, e->GetPos().y + e->GetStatus().h / 2 };
 		bool is_view = RayCasting(pos, 500);
 		if (is_view) {
@@ -124,6 +124,17 @@ void Game::CreateEnemy(Vector2 pos, float W, float H, Color c, float Health, flo
 	Enemys.push_back(std::make_unique<Enemy>(pos, W, H, c, Health, Attack, ta, t, texture));
 }
 
+Enemy* Game::CreateEnemyWithPointer(Vector2 pos, float W, float H, Color c, float Health, float Attack, float ta, Type_attack t, const char* texture) {
+	Enemys.push_back(std::make_unique<Enemy>(pos, W, H, c, Health, Attack, ta, t, texture));
+	int last = Enemys.size() - 1;
+	return Enemys[last].get();
+}
+int Game::CreateEnemyWithIndex(Vector2 pos, float W, float H, Color c, float Health, float Attack, float ta, Type_attack t, const char* texture) {
+	Enemys.push_back(std::make_unique<Enemy>(pos, W, H, c, Health, Attack, ta, t, texture));
+	return Enemys.size() - 1;
+}
+
+
 Wall* Game::GetWallPointer(int index) {
 	return this->Walls[index].get();
 }
@@ -134,7 +145,8 @@ Wall* Game::GetLastWallPointer() {
 
 Wall* Game::CreateWallWithPointer(Vector2 pos, float W, float H, Color c) {
 	Walls.push_back(std::make_unique<Wall>(pos, W, H, c));
-	return GetLastWallPointer();
+	int last = Walls.size() - 1;
+	return Walls[last].get();
 }
 int Game::CreateWallWithIndex(Vector2 pos, float W, float H, Color c) {
 	Walls.push_back(std::make_unique<Wall>(pos, W, H, c));
@@ -158,7 +170,7 @@ void Game::SetPlayer(Vector2 pos, float W, float H, Color c, float health, int e
 void Player::Update_player() {
 	this->old_pos = this->GetPos();
 	this->Move(this->vector_move.x, this->vector_move.y);
-	this->Render(); 
+	this->Render();
 	if (this->type_player == Type_player::DEFAULT) {
 		if (IsKeyDown(KEY_UP)) {
 			this->vector_move.y = -speed;
@@ -232,6 +244,47 @@ void Player::Update_player() {
 	}
 }
 
+void Game::DeleteWallWithIndex(int index) {
+	Walls.erase(Walls.begin() + index);
+}
+
+void Game::DeleteWallWithPointer(Wall* ptr) {
+	for (int i = 0; i < Walls.size(); i++) {
+		if (Walls[i].get() == ptr) {
+			Walls.erase(Walls.begin() + i);
+		}
+	}
+}
+
+void Game::DeleteAllWalls() {
+	Walls.clear();
+}
+
+
+void Game::DeleteWallWithSmartPointer(std::unique_ptr<Wall>& smart_ptr) {
+	smart_ptr.reset();
+}
+
+void Game::DeleteEnemyWithIndex(int index) {
+	Enemys.erase(Enemys.begin() + index);
+}
+
+void Game::DeleteEnemyWithPointer(Enemy* ptr) {
+	for (int i = 0; i < Enemys.size(); i++) {
+		if (Enemys[i].get() == ptr) {
+			Enemys.erase(Enemys.begin() + i);
+		}
+	}
+}
+
+void Game::DeleteAllEnemys() {
+	Enemys.clear();
+}
+
+void DeleteEnemyWithSmartPointer(std::unique_ptr<Enemy>& smart_ptr) {
+	smart_ptr.reset();
+}
+
 void Game::Game_update() {
 	ClearBackground(BLACK);
 	player->Update_player();
@@ -242,4 +295,4 @@ void Game::Game_update() {
 	audio_c.Update_music();
 	Custom_update();
 	UI_update();
-} 
+}

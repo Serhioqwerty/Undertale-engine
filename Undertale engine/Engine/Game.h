@@ -39,6 +39,8 @@ private:
 	void Collision_update();
 	//создание врага
 	void CreateEnemy(Vector2 pos, float W, float H, Color c, float Health, float Attack, float ta, Type_attack t, const char* texture);
+	Enemy* CreateEnemyWithPointer(Vector2 pos, float W, float H, Color c, float Health, float Attack, float ta, Type_attack t, const char* texture);
+	int CreateEnemyWithIndex(Vector2 pos, float W, float H, Color c, float Health, float Attack, float ta, Type_attack t, const char* texture);
 
 	Wall* GetWallPointer(int index); //Получение стены
 	Wall* GetLastWallPointer(); //Получение последней стены
@@ -54,6 +56,23 @@ private:
 	//Обновление UI
 	void UI_update();
 
+	//Удаление стены
+
+	void DeleteWallWithIndex(int index); //Удаление стены с помощью индекса
+	void DeleteWallWithPointer(Wall* ptr); //Удаление стены с помощью указателя
+	void DeleteAllWalls(); //Удаление всех стен
+	void DeleteWallWithSmartPointer(std::unique_ptr<Wall>& smart_ptr); //Удаление стеаны с помощью умного указателя
+
+
+	//Удаление врагов
+
+	void DeleteEnemyWithIndex(int index); //Удаление врагов с помощью индекса
+	void DeleteEnemyWithPointer(Enemy* ptr); //Удаление врагов с помощью указателя
+	void DeleteAllEnemys(); //Удаление всех врагов
+	void DeleteEnemyWithSmartPointer(std::unique_ptr<Enemy>& smart_ptr); //Удаление врага с помощью умного указателя
+
+	
+
 	//Обновление аудио
 
 	//Обновление стены, включающая обновление твердых коллизий
@@ -67,12 +86,12 @@ public:
 	std::vector<std::unique_ptr<Wall>>Walls;
 
 	Game() : RAM(0) {
-		
+
 	}
 
-	
 
-	
+
+
 	//Пользовательское обновление, где программист сможет добавлять свое
 	void Custom_update();
 
